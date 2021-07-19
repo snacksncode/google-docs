@@ -1,0 +1,79 @@
+@use "custom_fonts";
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue, sans-serif;
+  background-color: #f3f3f3;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// Styles for TextEditor (A4)
+.container {
+  .ql-editor {
+    width: 8.27in;
+    min-height: 11.69in;
+    border: none;
+    padding: 1in;
+    background: #fff;
+    margin: 0;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+  }
+  .ql-container {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    max-width: 100%;
+    border: none !important;
+  }
+  .ql-toolbar {
+    display: flex;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.35);
+    border: none;
+    background-color: #f3f3f3;
+  }
+}
+
+@page {
+  size: A4;
+  margin: 1in;
+}
+
+@media print {
+  body {
+    background: none !important;
+  }
+  .container {
+    .ql-container {
+      padding: 0;
+      margin: 0;
+      border: none;
+    }
+    .ql-editor {
+      width: 6.27in;
+      min-height: 9.69in;
+      border: none;
+      padding: 0;
+      margin: 0;
+      box-shadow: none;
+    }
+    .ql-toolbar {
+      display: none;
+    }
+  }
+}

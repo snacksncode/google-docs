@@ -1,0 +1,15 @@
+// all the fonts imported
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:ital@0;1&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+// styles for custom font sizes labels
+.ql-snow {
+  .ql-picker {
+    &.ql-size {
+      .ql-picker-label,
+      .ql-picker-item {
+        &::before {
+          content: attr(data-value) !important;
+        }
+      }
+    }
+  }
+}
