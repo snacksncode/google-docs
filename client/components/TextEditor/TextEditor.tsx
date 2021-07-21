@@ -10,7 +10,11 @@ import "katex/dist/katex.min.css";
 import config from "./config";
 import convertFontName from "../../utils/convertFontName";
 
-const TextEditor = () => {
+interface Props {
+  documentId: string;
+}
+
+const TextEditor = ({ documentId }: Props) => {
   const { quill, quillRef, Quill } = useQuill({
     theme: "snow",
     modules: {
@@ -23,6 +27,12 @@ const TextEditor = () => {
   });
   const [socket, setSocket] = useState<Socket | null>(null);
 
+  // Disable editor while loading
+  useEffect(() => {
+    if (quill == null) return;
+    quill.disable();
+    quill.setText("Loading...");
+  }, [quill]);
   // Register Custom Font Sizes
   useEffect(() => {
     if (Quill == null) return;
@@ -108,6 +118,16 @@ const TextEditor = () => {
   useEffect(() => {
     window.katex = katex;
   }, []);
+
+  // connect user to a specific room
+  useEffect(() => {
+    if (socket == null || quill == null) return;
+    socket.once("load-document", (document) => {
+      quill.setContents(document);
+      quill.enable();
+    });
+    socket.emit("get-document", documentId);
+  }, [quill, socket, documentId]);
 
   // Connect to server via socket (executed once)
   useEffect(() => {
