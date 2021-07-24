@@ -98,6 +98,19 @@ const TextEditor = ({ documentId }: Props) => {
     };
   }, [quill, socket]);
 
+  // Save document to database
+  useEffect(() => {
+    if (socket == null || quill == null) return;
+
+    const interval = setInterval(() => {
+      socket.emit("save-document", quill.getContents());
+    }, config.saveInterval);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [socket, quill]);
+
   // Text Change Event
   useEffect(() => {
     if (quill == null || socket == null) return;

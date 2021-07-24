@@ -1,12 +1,12 @@
 import { GetServerSideProps } from "next";
-import { uuid } from "uuidv4";
+import { v4 } from "uuid";
 
 export default function Home() {
   return <p>Redirecting...</p>;
 }
 
 export const getServerSideProps: GetServerSideProps = async (_context) => {
-  const randomDocumentId = uuid();
+  const randomDocumentId = v4();
   return {
     redirect: {
       destination: `/document/${randomDocumentId}`,

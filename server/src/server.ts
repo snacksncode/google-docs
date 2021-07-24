@@ -15,7 +15,6 @@ mongoose
   })
   .then((mongoose) => {
     console.log(`Successfully connected to database`);
-    mongoose.connection.close();
   })
   .catch((err) => {
     console.error(`Error connecting to database`, err);
@@ -34,13 +33,18 @@ const io = new Server(httpServer, {
 // Socket.io's events
 io.on("connection", (socket: Socket) => {
   console.log(`Connected user (id: ${socket.id})`);
-  socket.on("get-document", (documentId: string) => {
-    const data = "";
+  socket.on("get-document", async (documentId: string) => {
+    const document = await findOrCreateDocument(documentId);
+    if (!document) return;
     socket.join(documentId);
-    socket.emit("load-document", data);
+    socket.emit("load-document", (document as any).data);
 
     socket.on("send-changes", (delta) => {
       socket.broadcast.to(documentId).emit("receive-changes", delta);
+    });
+
+    socket.on("save-document", async (data) => {
+      await DocumentModel.findByIdAndUpdate(documentId, { data });
     });
   });
   socket.once("disconnect", () => {
@@ -49,10 +53,10 @@ io.on("connection", (socket: Socket) => {
 });
 
 // Database and saving of documents
-async function createOrFindDocument(id: string) {
+async function findOrCreateDocument(id: string): Promise<typeof DocumentModel | null> {
   const DEFAULT_VALUE_EMPTY_DOC = "";
   // fail check
-  if (id == null) return;
+  if (id == null) return null;
   // try finding the doc
   const document = await DocumentModel.findById(id);
   // if found return to the user

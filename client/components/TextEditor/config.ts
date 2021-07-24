@@ -5,6 +5,7 @@ export interface Config {
   toolbar: any[][];
   fonts: string[];
   fontSizes: string[];
+  saveInterval: number;
 }
 
 const FONTS = [
@@ -78,11 +79,14 @@ const TOOLBAR_OPTIONS = [
   ["clean"], // remove formatting button
 ];
 
+const SAVE_INTERVAL_MS = 5000;
+
 const config: Config = {
   formats: ALLOWED_FORMATS,
   toolbar: TOOLBAR_OPTIONS,
   fontSizes: CUSTOM_FONT_SIZES,
   fonts: FONTS,
+  saveInterval: SAVE_INTERVAL_MS,
 };
 
 export default config;
